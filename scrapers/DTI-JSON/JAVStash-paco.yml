@@ -1,0 +1,33 @@
+name: JAVStash-paco(JSON)
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - paco
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - paco
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - paco
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - pacopacomama.com
+    queryURL: "https://www.pacopacomama.com/movies/{filename}/"
+    script:
+      - python
+      - DTI_common.py
+      - paco
+      - sceneByURL

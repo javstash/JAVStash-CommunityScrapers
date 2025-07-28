@@ -1,0 +1,33 @@
+name: JAVStash-mura(JSON)
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - mura
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - mura
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - mura
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - muramura.tv
+    queryURL: "https://www.muramura.tv/movies/{filename}/"
+    script:
+      - python
+      - DTI_common.py
+      - mura
+      - sceneByURL

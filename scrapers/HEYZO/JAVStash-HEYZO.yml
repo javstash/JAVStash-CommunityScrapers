@@ -1,0 +1,29 @@
+name: JAVStash-HEYZO
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - HEYZO.py
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - HEYZO.py
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - HEYZO.py
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - heyzo.com
+    queryURL: "www.heyzo.com/moviepages/{filename}/index.html"
+    script:
+      - python
+      - HEYZO.py
+      - sceneByURL

@@ -1,0 +1,33 @@
+name: JAVStash-1pondo(JSON)
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 1pon
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 1pon
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 1pon
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - 1pondo.tv
+    queryURL: "https://www.1pondo.tv/movies/{filename}/"
+    script:
+      - python
+      - DTI_common.py
+      - 1pon
+      - sceneByURL

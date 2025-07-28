@@ -1,0 +1,33 @@
+name: JAVStash-carib(JSON)
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - carib
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - carib
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - carib
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - caribbeancom.com
+    queryURL: "https://www.caribbeancom.com/moviepages/{filename}/"
+    script:
+      - python
+      - DTI_common.py
+      - carib
+      - sceneByURL

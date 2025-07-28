@@ -1,0 +1,32 @@
+{
+  "paco": {
+    "studio_name": "Pacopacomama",
+    "json_prefix": "https://www.pacopacomama.com/dyn/phpauto/",
+    "url_prefix": "https://www.pacopacomama.com/movies/",
+    "code_regex": "(\\d{6}_\\d{3})"
+  },
+  "mura": {
+    "studio_name": "Muramura",
+    "json_prefix": "https://muramura.tv/dyn/phpauto/",
+    "url_prefix": "https://www.muramura.tv/movies/",
+    "code_regex": "(\\d{6}_\\d{3,4})"
+  },
+  "carib": {
+    "studio_name": "Caribbeancom",
+    "json_prefix": "https://b.caribbeancom.com/dyn/phpauto/",
+    "url_prefix": "https://www.caribbeancom.com/moviepages/",
+    "code_regex": "(\\d{6}-\\d{3})"
+  },
+  "10mu": {
+    "studio_name": "10Musume",
+    "json_prefix": "https://www.10musume.com/dyn/phpauto/",
+    "url_prefix": "http://www.10musume.com/movies/",
+    "code_regex": "(\\d{6}_\\d{2})"
+  },
+  "1pon": {
+    "studio_name": "1Pondo",
+    "json_prefix": "https://1pondo.tv/dyn/phpauto/",
+    "url_prefix": "https://www.1pondo.tv/movies/",
+    "code_regex": "(\\d{6}_\\d{3})"
+  }
+}

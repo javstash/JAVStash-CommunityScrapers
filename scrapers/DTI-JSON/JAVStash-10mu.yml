@@ -1,0 +1,33 @@
+name: JAVStash-10mu(JSON)
+
+sceneByName:  
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 10mu
+    - sceneByName
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 10mu
+    - sceneByQueryFragment
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - DTI_common.py
+    - 10mu
+    - sceneByFragment
+sceneByURL:
+  - action: script
+    url:
+      - 10musume.com
+    queryURL: "https://www.10musume.com/movies/{filename}/"
+    script:
+      - python
+      - DTI_common.py
+      - 10mu
+      - sceneByURL
