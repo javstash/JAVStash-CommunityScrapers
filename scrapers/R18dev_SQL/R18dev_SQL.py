@@ -254,7 +254,7 @@ def readJSONInput():
     input = sys.stdin.read()
     return json.loads(input)
 
-SUPER_DUPER_JAV_CODE_REGEX = r'.*?([A-Z]+|[3DSVR]+|[T28]+|[T38]+)-?(\d+[Z]?[E]?)(?:-pt)?(\d{1,2})?.*' # https://regex101.com/r/K6RizW/1
+SUPER_DUPER_JAV_CODE_REGEX = r'.*?([A-Z]+|[1?3DSVR]+|[T28]+|[T38]+)-?(\d+[Z]?[E]?)(?:-pt)?(\d{1,2})?.*' # https://regex101.com/r/K6RizW/1
 
 i = readJSONInput()
 log(json.dumps(i, ensure_ascii=ensure_ascii), "@", sys.argv[1])
