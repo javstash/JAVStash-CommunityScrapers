@@ -34,22 +34,30 @@ service_code = '%'
 # If True, uses label instead of maker for studio (eg: Moodyz Acid instead of Moodyz)
 use_label_as_studio = False
 
+# Skip dvd code matching (Set to True if your input is FANZA content_id
+skip_dvd_code_matching = False
 
-conn = psycopg2.connect(database="r18",
-                        host="javstash.org",
-                        user="scraper",
-                        password="scraper",
-                        port="5555")
+# Fuzzy mode (experimental and may cause mismatches)
+fuzzy_mode = False
 
 # For guide to set up your own PostgreSQL server
 # See: https://github.com/javstash/R18dev_SQL/blob/main/README.md
-"""
 conn = psycopg2.connect(database="r18",
                         host="localhost",
                         user="postgres",
                         password="postgres",
                         port="5432")
+
+# Uncomment the following block to use javstash.org mirror
 """
+conn = psycopg2.connect(database="r18",
+                        host="javstash.org",
+                        user="scraper",
+                        password="scraper",
+                        port="5555")
+"""
+
+
 def get_content_id(dvd_code, service_code='%'):
     cursor = conn.cursor()
     cursor.execute(f"""
@@ -69,7 +77,7 @@ def get_scene_info(content_id, service_code='%'):
                     SELECT title_ja, title_en, MT.target_en, comment_ja, comment_en, release_date, jacket_full_url, maker_id, label_id, series_id, dvd_id, service_code
                     FROM derived_video 
                     LEFT JOIN machine_translation MT ON derived_video.title_ja = MT.source_ja
-                    WHERE content_id='{content_id}' AND service_code like '{service_code}' 
+                    WHERE content_id like '{content_id}' escape '_' AND service_code like '{service_code}' 
                     ORDER BY dvd_id ASC, service_code ASC
                    """)
     result = cursor.fetchone()
@@ -215,7 +223,7 @@ def scrapePerformer(input):
         ret['name'] = result[1] if eng is None else eng
         ret['aliases'] = result[1]
 
-    ret['urls'] = ["https://actress.dmm.co.jp/-/detail/=/actress_id="+actressid+"/","https://r18.dev/videos/vod/movies/list/?id="+actressid+"&type=actress"]
+    ret['urls'] = ["https://video.dmm.co.jp/av/list/?actress="+actressid+"/","https://r18.dev/videos/vod/movies/list/?id="+actressid+"&type=actress"]
     return ret
 
 def wikidata(pid):
@@ -273,7 +281,10 @@ elif (sys.argv[1] == "performerByFragment"):
 
 elif (sys.argv[1] == "sceneByName"):
     query_string = i['name']
-    if(re.search(SUPER_DUPER_JAV_CODE_REGEX,query_string, flags=re.IGNORECASE)):
+    if(skip_dvd_code_matching):
+        content_id = query_string
+        dvd_code_found = False
+    elif(re.search(SUPER_DUPER_JAV_CODE_REGEX,query_string, flags=re.IGNORECASE)):
         dvd_code = re.search(SUPER_DUPER_JAV_CODE_REGEX,query_string, flags=re.IGNORECASE).group(1)+'-'+re.search(SUPER_DUPER_JAV_CODE_REGEX,query_string, flags=re.IGNORECASE).group(2)
         dvd_code_found = True
         log(sys.argv[1],"| DVD CODE: "+dvd_code)        
@@ -308,7 +319,11 @@ elif (sys.argv[1] == "sceneByQueryFragment" or sys.argv[1] == "sceneByFragment")
     try:
         if(flag == False):
             input_code = i['code']
-            if(re.search(SUPER_DUPER_JAV_CODE_REGEX,input_code, flags=re.IGNORECASE)):
+            if(skip_dvd_code_matching and input_code is not None):
+                content_id = input_code
+                flag = True
+                dvd_code_found = False
+            elif(re.search(SUPER_DUPER_JAV_CODE_REGEX,input_code, flags=re.IGNORECASE)):
                 dvd_code = re.search(SUPER_DUPER_JAV_CODE_REGEX,input_code, flags=re.IGNORECASE).group(1)+'-'+re.search(SUPER_DUPER_JAV_CODE_REGEX,input_code, flags=re.IGNORECASE).group(2)
                 log(sys.argv[1],"| CODE | DVD CODE: "+dvd_code)
                 flag = True
@@ -318,7 +333,11 @@ elif (sys.argv[1] == "sceneByQueryFragment" or sys.argv[1] == "sceneByFragment")
     try:
         if(flag == False):
             input_title = i['title']
-            if(re.search(SUPER_DUPER_JAV_CODE_REGEX,input_title, flags=re.IGNORECASE)):
+            if(skip_dvd_code_matching and input_title is not None):
+                content_id = input_title
+                flag = True
+                dvd_code_found = False
+            elif(re.search(SUPER_DUPER_JAV_CODE_REGEX,input_title, flags=re.IGNORECASE)):
                 dvd_code = re.search(SUPER_DUPER_JAV_CODE_REGEX,input_title, flags=re.IGNORECASE).group(1)+'-'+re.search(SUPER_DUPER_JAV_CODE_REGEX,input_title, flags=re.IGNORECASE).group(2)
                 log(sys.argv[1],"| TITLE | DVD CODE: "+dvd_code)
                 dvd_code_found = True
@@ -351,7 +370,10 @@ if(dvd_code_found):
         log("DVD CODE:", dvd_code," -> ",content_ids[0][1],"@",content_ids[0][2])
     except:
         log("Cannot find a corresponding content_id for dvd_code:", dvd_code)
-        content_id = dvd_code.replace('-','')
+        if(fuzzy_mode):
+            content_id = '%'+dvd_code.split('-')[0]+'%'+dvd_code.split('-')[1]
+        else:
+            content_id = dvd_code.replace('-','')
         log("Fallback to :", content_id)
 
 content_id = content_id.lower()
