@@ -77,7 +77,7 @@ def get_scene_info(content_id, service_code='%'):
                     SELECT title_ja, title_en, MT.target_en, comment_ja, comment_en, release_date, jacket_full_url, maker_id, label_id, series_id, dvd_id, service_code
                     FROM derived_video 
                     LEFT JOIN machine_translation MT ON derived_video.title_ja = MT.source_ja
-                    WHERE content_id like '{content_id}' escape '_' AND service_code like '{service_code}' 
+                    WHERE content_id = '{content_id}' AND service_code like '{service_code}' 
                     ORDER BY dvd_id ASC, service_code ASC
                    """)
     result = cursor.fetchone()
