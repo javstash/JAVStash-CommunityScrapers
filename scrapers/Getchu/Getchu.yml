@@ -1,0 +1,30 @@
+name: getchu
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - dl.getchu.com
+    scraper: sceneScraper
+
+
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title: //meta[@property="og:title"]/@content
+      Code:
+        selector: //meta[@property="og:url"]/@content
+        postProcess:
+          - replace:
+              - regex: .*item(\d*).* #
+                with: $1
+      Performers:
+        Name: //td[.="作者"]/following-sibling::td/text()
+      Studio:
+        Name: //td[.="サークル"]/following-sibling::td/a/text()
+      Image:
+        selector: //meta[@property="og:image"]/@content
+      Date:
+        selector: //td[.="配信開始日"]/following-sibling::td/text()
+        postProcess:
+          - parseDate: 2006/01/02
+      Tags:
+        Name: //td[.="趣向"]/following-sibling::td/a/text()
